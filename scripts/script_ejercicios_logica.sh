@@ -1,53 +1,53 @@
 #!/bin/bash
-# Autor: Angel Aragon Martinez
-# Fecha: 2026-05-09
-# Descripcion: Ejercicios de condicionales, bucles y funciones en Bash
+# Author: Angel Aragon Martinez
+# Date: 2026-05-09
+# Description: Exercises on conditionals, loops and functions in Bash
 
-# 1. Numero positivo, negativo o cero
+# 1. Ask for a number and show if it is positive, negative or zero
 echo "-1-"
-read -p "Ingresa un numero bro: " num
+read -p "Enter a number: " num
 if [ "$num" -gt 0 ]; then
-	echo "Tu numero es positivo"
+	echo "Your number is positive"
 elif [ "$num" -eq 0 ]; then
-	echo "Tu numero es 0"
+	echo "Your number is 0"
 else
-	echo "Tu numero es negativo"
+	echo "Your number is negative"
 fi
 
 echo "-2-"
-# 2. Cual de dos numeros es mayor o si son iguales
-read -p "Ingresa dos numeros bro: " num2 num3
+# 2. Ask for two numbers and show which is greater or if they are equal
+read -p "Enter two numbers: " num2 num3
 if [ "$num2" -gt "$num3" ]; then
-	echo "Es mayor: $num2"
+	echo "Greater: $num2"
 elif [ "$num3" -gt "$num2" ]; then
-	echo "Es mayor: $num3"
+	echo "Greater: $num3"
 else
-	echo "Son iguales $num2 y $num3"
+	echo "They are equal: $num2 and $num3"
 fi
 
 echo "-3-"
-# 3. Menu interactivo con while true; se sale eligiendo la opcion 4
+# 3. Interactive menu with while true; exit by choosing option 4
 while true; do
 	echo "
-	Bienvenido a los comandos interactivos
-	1. Imprime el mensaje que tu quieras
-	2. Actualiza el sistema
-	3. Ver procesos
-	4. Salir"
-	read -p "Selecciona una opcion insano: " opcion
+	Welcome to interactive commands
+	1. Print a custom message
+	2. Update the system
+	3. View processes
+	4. Exit"
+	read -p "Select an option: " option
 
-	if [ "$opcion" -eq 1 ]; then
-		read -p "Mensaje a imprimir: " mensaje
-		echo "Tu mensaje es: $mensaje"
-		read -p "Presiona Enter para continuar..."
-	elif [ "$opcion" -eq 2 ]; then
+	if [ "$option" -eq 1 ]; then
+		read -p "Message to print: " message
+		echo "Your message: $message"
+		read -p "Press Enter to continue..."
+	elif [ "$option" -eq 2 ]; then
 		sudo apt update && sudo apt upgrade -y
-		echo "Sistema actualizado"
-		read -p "Presiona Enter para continuar..."
-	elif [ "$opcion" -eq 3 ]; then
+		echo "System updated"
+		read -p "Press Enter to continue..."
+	elif [ "$option" -eq 3 ]; then
 		htop
-	elif [ "$opcion" -eq 4 ]; then
-		echo "Saliendo..."
+	elif [ "$option" -eq 4 ]; then
+		echo "Exiting..."
 		for i in {1..3}; do
 			sleep 0.5
 			echo -n "."
@@ -55,27 +55,27 @@ while true; do
 		echo -e "\n"
 		break
 	else
-		echo "Comando incorrecto"
+		echo "Invalid option"
 	fi
 done
 
-# 4. Numeros del 1 al 10 con for
+# 4. Print numbers from 1 to 10 with for
 for i in {1..10}; do
-	echo "Numero recorrido: $i"
+	echo "Number: $i"
 done
 
-# 5. Pide pares de numeros hasta que ambos sean 0; muestra el total introducido
+# 5. Ask for pairs of numbers until both are 0; show total count entered
 num4=-1
 num5=-1
 count=0
 until [[ $num4 -eq 0 && $num5 -eq 0 ]]; do
-	read -p "Introduce dos numeros: " num4 num5
+	read -p "Enter two numbers: " num4 num5
 	((count += 2))
 done
 ((count -= 2))
-echo "Total de numeros introducidos: $count"
+echo "Total numbers entered: $count"
 
-# 6. Numeros del 1 al 10, saltando el 5 y deteniendose en el 8
+# 6. Print numbers from 1 to 10, skipping 5 and stopping at 8
 i=0
 for i in {1..10}; do
 	if [ "$i" -eq 5 ]; then
@@ -83,44 +83,41 @@ for i in {1..10}; do
 	elif [ "$i" -eq 9 ]; then
 		break
 	fi
-	echo "Numero: $i"
+	echo "Number: $i"
 done
 
-# 7. Funcion que saluda usando una variable global capturada antes de llamarla
-read -p "Cual es tu nombre we: " name
+# 7. Function that greets using a global variable captured before calling it
+read -p "What is your name? " name
 function_saludar() {
-	echo "Hola $name, bienvenido al script"
+	echo "Hello $name, welcome to the script"
 }
 function_saludar
 
-# 8. Funcion que suma dos enteros y devuelve el resultado via return
-read -p "Ingresa dos enteros bro: " entero1 entero2
+# 8. Function that receives two integers, calculates their sum and returns it via return
+read -p "Enter two integers: " entero1 entero2
 function_operaciones() {
 	local resultado=$(( $1 + $2 ))
 	return $resultado
 }
 function_operaciones $entero1 $entero2
-echo "La suma es: $?"
+echo "Sum: $?"
 
-# 9. Intenta copiar un archivo; muestra mensaje si falla
-read -p "Ingresa el nombre de un archivo que deseas copiar: " file
+# 9. Try to copy a file; show error message if it fails
+read -p "Enter the name of a file to copy: " file
 function_file_cp() {
 	cp "$1" "$1_backup"
 	return $?
 }
 function_file_cp "$file"
 	if [ "$?" -ne 0 ]; then
-	echo "El archivo '$file' no se ha podido copiar"
+	echo "Could not copy file '$file'"
 	else
-	echo "Archivo copiado con exito"
+	echo "File copied successfully"
 	fi
 
-# 10. Lista todos los archivos .sh del directorio actual
-# Autor: Angel
-# Fecha: 7/mayo/2026
-# Descripcion: listado de scripts
-echo "Listando archivos con extension .sh en el directorio actual..."
+# 10. List all .sh files in the current directory
+echo "Listing .sh files in current directory..."
 	for archivo in *.sh; do
-	echo "Archivo: $archivo"
+	echo "File: $archivo"
 done
-echo "GG! has acabado los ejercicios."
+echo "Done! All exercises completed."

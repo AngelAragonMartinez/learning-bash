@@ -1,63 +1,63 @@
 #!/bin/bash
-# Autor: Angel Aragon Martinez
-# Fecha: 2026-05-09
-# Descripcion: Ejercicios practicos de variables, operaciones aritmeticas y E/S en Bash
+# Author: Angel Aragon Martinez
+# Date: 2026-05-09
+# Description: Practical exercises on variables, arithmetic operations and I/O in Bash
 
-echo "--- Ejercicios ---"
-echo "1. Imprime en pantalla: Hola, mundo desde Bash."
-echo "R: Hola, mundo desde Bash."
+echo "--- Exercises ---"
+echo "1. Print on screen: Hello, world from Bash."
+echo "R: Hello, world from Bash."
 echo -e "\n"
 
-echo "2. Muestra la fecha y el directorio actual"
-echo -e "Fecha: $(date)\nAdemas, tu directorio actual es:$(pwd)"
+echo "2. Show the current date and directory"
+echo -e "Date: $(date)\nCurrent directory: $(pwd)"
 echo -e "\n"
 
-echo "3. Guarda tu nombre en una variable y muestralo en pantalla"
-read -p "Cual es tu nombre? " var1
-echo "Hola $var1!"
+echo "3. Store your name in a variable and display it"
+read -p "What is your name? " var1
+echo "Hello $var1!"
 echo -e "\n"
 
-echo "4. Declara dos variables numericas, sumalas, restalas y multiplicalas"
-read -p "Ingresa tus dos variables bro: " var2 var3
+echo "4. Declare two numeric variables, add, subtract and multiply them"
+read -p "Enter two numbers: " var2 var3
 echo -e "\n"
-echo "--- Mini Calculadora --"
+echo "--- Mini Calculator ---"
 sum=$((var2+var3))
 rest=$((var2-var3))
 mult=$((var2*var3))
-echo "La suma es: $sum"
-echo "La resta es: $rest"
-echo "La multiplicacion es: $mult"
+echo "Sum: $sum"
+echo "Subtraction: $rest"
+echo "Multiplication: $mult"
 echo "-----------------------"
 echo -e "\n"
 
-echo "5. Pide dos numeros al usuario y muestra la suma"
-read -p "Vuelve a ingresar dos numeros insano: " num1 num2
+echo "5. Ask the user for two numbers and show their sum"
+read -p "Enter two more numbers: " num1 num2
 sum2=$((num1+num2))
-echo "La suma es: $sum2"
+echo "Sum: $sum2"
 echo -e "\n"
 
-echo "6. Ingresa 3 argumentos al script y muestra el primero y el tercero"
-echo "Argumento 1 ingresado: $1, el argumento 2 ingresado: $2 y el 3 argumento: $3"
+echo "6. Pass 3 arguments to the script and show the first and third"
+echo "Argument 1: $1, Argument 2: $2, Argument 3: $3"
 echo -e "\n"
 
-echo "7. Muestra el total de argumentos ingresados al script"
-echo "Total de argumentos ingresados: $#"
+echo "7. Show the total number of arguments passed to the script"
+echo "Total arguments: $#"
 echo -e "\n"
 
-echo "8. Con los primeros dos argumentos recibidos, muestra la suma, resta, multiplicacion y division"
+echo "8. Using the first two arguments, show sum, subtraction and multiplication"
 sum3=$(($1 + $2))
 rest2=$(($1 - $2))
 mult2=$(($1 * $2))
-echo "Suma $1 + $2: $sum3"
-echo "Resta $1 - $2: $rest2"
-echo "Multiplicacion $1 x $2: $mult2"
+echo "Sum $1 + $2: $sum3"
+echo "Subtraction $1 - $2: $rest2"
+echo "Multiplication $1 x $2: $mult2"
 echo -e "\n"
 
-echo "9. Crea un archivo con el nombre ingresado por el usuario y guarda tu nombre en su interior"
-read -p "Ingresa el nombre que deseas que tenga tu archivo.txt: " name_file
-read -p "Y ingresa tu nombre: " interior_file
-echo "Ejecutando comandos..."
+echo "9. Create a file with a user-provided name and write your name inside it"
+read -p "Enter the name for your .txt file: " name_file
+read -p "Enter your name: " interior_file
+echo "Running commands..."
 touch "${name_file}.txt"
 echo "$interior_file" >> "${name_file}.txt"
 ruta_completa=$(realpath "${name_file}.txt")
-echo "Listo ! Archivo creado correctamente junto con su contenido en : $ruta_completa"
+echo "Done! File created at: $ruta_completa"

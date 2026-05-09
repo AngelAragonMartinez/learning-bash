@@ -1,36 +1,36 @@
 #!/bin/bash
-# Autor: Angel Aragon Martinez
-# Fecha: 2026-05-09
-# Descripcion: Bucles for, while y until, y control de flujo con break y continue
+# Author: Angel Aragon Martinez
+# Date: 2026-05-09
+# Description: Loops: for, while, until and flow control with break and continue
 
-# for con lista de valores
+# for with a list of values
 for i in 1 2 3 4 5
 do
-	echo "Numero: $i"
+	echo "Number: $i"
 done
 
-# for iterando archivos del directorio actual
+# for iterating over files in current directory
 for name in *.sh
 do
-	echo "Archivo: $name"
+	echo "File: $name"
 done
 
-# while: se repite mientras la condicion sea verdadera
+# while: repeats while condition is true
 count=1
 while [ "$count" -le 5 ];
 do
-	echo "Contador: $count"
+	echo "Counter: $count"
 	((count++))
 done
 
-# until: se repite hasta que la condicion sea verdadera
+# until: repeats until condition becomes true
 until [ "$count" -gt 10 ]
 do
-	echo "Contador: $count"
+	echo "Counter: $count"
 	((count++))
 done
 
-# Control de bucles: continue salta iteracion, break detiene el bucle
+# Loop control: continue skips iteration, break exits the loop
 for i in 1 2 3 4 5
 do
 	if [ "$i" -eq 3 ]; then
@@ -38,5 +38,5 @@ do
 	elif [ "$i" -eq 4 ]; then
 		break;
 	fi
-        echo "Numero: $i"
+        echo "Number: $i"
 done

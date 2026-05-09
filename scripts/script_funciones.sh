@@ -1,30 +1,30 @@
 #!/bin/bash
-# Autor: Angel Aragon Martinez
-# Fecha: 2026-05-09
-# Descripcion: Definicion y uso de funciones, variables locales/globales y manejo de errores
+# Author: Angel Aragon Martinez
+# Date: 2026-05-09
+# Description: Function definition and usage, local/global variables and error handling
 
-# Funcion basica sin parametros
+# Basic function with no parameters
 my_function() {
-	echo "Hola desde la funcion"
+	echo "Hello from the function"
 }
 
 my_function
 
-# Funcion que recibe parametros posicionales ($1, $2, ...)
+# Function that receives positional parameters ($1, $2, ...)
 my_function_with_params() {
-	echo "Hola $1"
+	echo "Hello $1"
 }
 
 my_function_with_params GG
 
 name=GG
 my_function_2() {
-	local msj=", mundo"
-	echo "Hola $msj $name"
+	local msj=", world"
+	echo "Hello $msj $name"
 }
 
-# Las variables declaradas con 'local' solo viven dentro de la funcion;
-# las externas son globales y accesibles desde cualquier funcion
+# Variables declared with 'local' only live inside the function;
+# external variables are global and accessible from any function
 my_function_2
 
 my_function_with_return() {
@@ -32,12 +32,12 @@ my_function_with_return() {
 }
 
 my_function_with_return
-echo $?		# $? guarda el codigo de salida del ultimo comando (0 = exito)
+echo $?		# $? holds the exit code of the last command (0 = success)
 
-# Manejo de errores con $? y operadores || y &&
+# Error handling with $? and || and && operators
 cp file.txt ../bash
 if [ "$?" -ne 0 ]; then
-	echo "Error al copiar el archivo"
+	echo "Error copying the file"
 fi
-cp file.txt ../bash || echo "Otra vez se ha producido el error"
-cp script_funciones.sh ../bash && echo "No se ha producido un error"
+cp file.txt ../bash || echo "Error occurred again"
+cp script_funciones.sh ../bash && echo "No error occurred"

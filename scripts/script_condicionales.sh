@@ -1,44 +1,44 @@
 #!/bin/bash
-# Autor: Angel Aragon Martinez
-# Fecha: 2026-05-09
-# Descripcion: Estructuras condicionales: if-elif-else, case y comprobacion de archivos
+# Author: Angel Aragon Martinez
+# Date: 2026-05-09
+# Description: Conditionals: if-elif-else, case and file existence check
 
-# Condicional if-elif-else con numero
+# if-elif-else with a number
 num=25
 
 if [ "$num" -ge 10 ]; then
-	echo "Numero mayor o igual a 10"
+	echo "Number is greater than or equal to 10"
 elif [ "$num" -eq 0 ]; then
-	echo "El número es 0"
+	echo "The number is 0"
 else
-	echo "Condicion por defecto"
+	echo "Default condition"
 fi
 
-# Menú interactivo con case
-echo -e "--- Elige una opcion ---\n1\n2\n3: "
-read opcion
+# Interactive menu with case
+echo -e "--- Choose an option ---\n1\n2\n3: "
+read option
 
-case $opcion in
-	1) echo "Elegiste 1 GG!";;
-	2) echo "Elegiste 2 papu:v";;
-	3) echo "Elegiste 3 insanoGG";;
-	*) echo "Opción inválida";;
+case $option in
+	1) echo "You chose 1!";;
+	2) echo "You chose 2!";;
+	3) echo "You chose 3!";;
+	*) echo "Invalid option";;
 esac
 
-read -p "Escribe tu nombre: " name
+read -p "Enter your name: " name
 
-# -n comprueba que la cadena no esta vacia
+# -n checks that the string is not empty
 if [ -n "$name" ]; then
-	echo "El nombre existe"
+	echo "Name is set"
 fi
 
 if [ "$num" -ge 18 ] && [ -n "$name" ]; then
-	echo "Mayor de edad"
+	echo "Adult"
 fi
 
-# Comprobacion de existencia de archivo con -e
+# Check file existence with -e
 if [ -e "./script_apuntes.sh" ]; then
-	echo "El archivo existe"
+	echo "File exists"
 else
-	echo "El archivo no existe"
+	echo "File does not exist"
 fi

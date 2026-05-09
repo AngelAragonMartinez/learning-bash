@@ -1,38 +1,38 @@
 #!/bin/bash
-# Autor: Angel Aragon Martinez
-# Fecha: 2026-05-09
-# Descripcion: Variables, operaciones aritmeticas, lectura de datos y argumentos en Bash
+# Author: Angel Aragon Martinez
+# Date: 2026-05-09
+# Description: Variables, arithmetic operations, input reading and arguments in Bash
 
-echo "--- Hola usuario promedio de bash ---"
+echo "--- Hello average bash user ---"
 echo "--- $(date) ---"
-echo "--- Directorio actual: $(pwd) ---"
+echo "--- Current directory: $(pwd) ---"
 
 name="GG"
-echo "Hola $name!"
+echo "Hello $name!"
 
-# Operaciones aritmeticas con let y con expansion
+# Arithmetic operations using let and arithmetic expansion
 a=5
 b=3
 let sum=a+b
-echo "La suma1 es --- $sum ---"
+echo "Sum1 is --- $sum ---"
 sum2=$((a+b))
-echo "La suma2 es --- $sum2 ---"
+echo "Sum2 is --- $sum2 ---"
 echo "*************************"
 
-echo "--- Lectura de datos ---"
-read -p "¿Cuántos años tienes? " respuesta
+echo "--- Data input ---"
+read -p "How old are you? " age
 
-if [ "$respuesta" -lt 18 ]; then
-	echo "Fua papu estas bien jovenazo, GG HJDPT"
+if [ "$age" -lt 18 ]; then
+	echo "Wow, you are quite young!"
 else
-	echo "Viejo boludo"
+	echo "Not so young anymore, haha"
 fi
 echo "*************************"
 
-# Argumentos posicionales del script
-echo "--- Argumentos y parametros ---"
-echo "El nombre del script es: $0"
-echo "El primer parametro es: $1"
-echo "El segundo parametro es: $2"
-echo "Numero de parametros: $#"
-echo "Todos los argumentos: $@"
+# Positional arguments passed to the script
+echo "--- Arguments and parameters ---"
+echo "Script name: $0"
+echo "First parameter: $1"
+echo "Second parameter: $2"
+echo "Number of parameters: $#"
+echo "All arguments: $@"
