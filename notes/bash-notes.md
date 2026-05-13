@@ -1176,3 +1176,33 @@ fi
 ```
 
 Run a command → capture result in a variable → evaluate it → increment a risk score.
+
+### System info commands
+
+These commands retrieve basic information about the machine, useful in audit and monitoring scripts.
+
+| Command | Description |
+| --- | --- |
+| `hostname` | Shows the machine's name on the network |
+| `uname -r` | Shows the running kernel version |
+| `cat /etc/os-release` | Reads the file with OS distribution details |
+
+```bash
+hostname                  # print the machine name
+uname -r                  # print kernel version (e.g. 6.1.0-21-amd64)
+cat /etc/os-release       # full OS info file
+```
+
+**Extracting a specific value from `/etc/os-release`:**
+
+```bash
+cat /etc/os-release | grep PRETTY_NAME | cut -d= -f2 | tr -d '"'
+```
+
+| Step | Command | What it does |
+| --- | --- | --- |
+| 1 | `grep PRETTY_NAME` | Filters the line that contains `PRETTY_NAME` |
+| 2 | `cut -d= -f2` | Splits on `=` and takes the second field (the value) |
+| 3 | `tr -d '"'` | Removes double-quote characters from the output |
+
+> `cut -d= -f2` — `-d` sets the delimiter, `-f` selects the field number (1-based).
