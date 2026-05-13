@@ -16,6 +16,7 @@
 - [Functions](#functions)
 - [Cron Jobs](#cron-jobs)
 - [Exercises](#exercises)
+- [Security & System Administration](#security--system-administration)
 
 ---
 
@@ -1031,3 +1032,147 @@ update
 ```bash
 unalias update
 ```
+
+---
+
+## Security & System Administration
+
+### `tee` and `tee -a`
+
+> `tee` reads from stdin and writes to **both stdout and a file** simultaneously. Unlike `>`, it lets you see the output on screen while saving it.
+
+```bash
+command | tee file.txt      # write to file (overwrites)
+command | tee -a file.txt   # append to file (keeps existing content)
+```
+
+**When to use it:** audit scripts, logging pipelines, any situation where output must be visible AND saved at the same time.
+
+### `getent passwd` and `/etc/passwd` format
+
+`getent passwd` queries the system's user database (works with local files and LDAP/NIS alike).
+
+Each line in `/etc/passwd` follows this format:
+
+```
+username:password:UID:GID:comment:home:shell
+```
+
+| Field | Description |
+| --- | --- |
+| `username` | Login name |
+| `password` | `x` means the hash is stored in `/etc/shadow` |
+| `UID` | User ID (regular users ≥ 1000) |
+| `GID` | Primary group ID |
+| `comment` | Full name or description |
+| `home` | Home directory |
+| `shell` | Default shell |
+
+```bash
+getent passwd                         # list all users
+getent passwd | awk -F: '$3 >= 1000'  # filter real users (UID ≥ 1000)
+```
+
+### `ss -tuln`
+
+`ss` (socket statistics) replaces the deprecated `netstat`. Shows network connections and listening ports.
+
+| Flag | Meaning |
+| --- | --- |
+| `-t` | TCP sockets |
+| `-u` | UDP sockets |
+| `-l` | Listening sockets only |
+| `-n` | Numeric output (no DNS resolution, shows raw ports/IPs) |
+
+```bash
+ss -tuln                           # show all TCP/UDP listening ports
+ss -tuln | grep "LISTEN"           # filter only listening state
+ss -tuln | grep -v "127.0.0.1"    # exclude localhost-only ports
+```
+
+### `find` with `-perm`, `-type`, and `2>/dev/null`
+
+```bash
+find /path -perm 777  -type f 2>/dev/null   # files with exact 777 permissions
+find /path -perm -4000 -type f 2>/dev/null  # files with SUID bit set
+```
+
+| Option | Description |
+| --- | --- |
+| `-perm 777` | Exact permission match |
+| `-perm -4000` | Match if SUID bit is set (regardless of other bits) |
+| `-type f` | Regular files only |
+| `-type d` | Directories only |
+| `2>/dev/null` | Suppress permission-denied errors (redirect stderr to null) |
+
+### 777 permissions and why they are dangerous
+
+`777` means **read + write + execute for owner, group, and others** — any user on the system can do anything with that file.
+
+**Why it's a security risk:**
+- Any user can modify or execute the file
+- Attackers can inject malicious code into scripts
+- In shared directories like `/tmp`, it enables privilege escalation
+
+```bash
+chmod 644 file.txt  # safer for data files: owner writes, others read only
+chmod 755 script.sh # safer for executables: others can run but not modify
+```
+
+### SUID and why it matters in security
+
+**SUID (Set User ID)** is a special permission bit. When set on an executable, the file **runs with the owner's privileges** instead of the caller's — often `root`.
+
+```bash
+find /usr /bin /sbin -perm -4000 -type f 2>/dev/null  # list SUID files
+ls -l /usr/bin/passwd  # example output: -rwsr-xr-x (the 's' indicates SUID)
+```
+
+**Why it's a security risk:**
+- Exploiting a vulnerable SUID binary grants root-level access
+- An unexpected SUID file placed by an attacker is a serious indicator of compromise
+- Legitimate SUID files (`passwd`, `sudo`) are expected; unrecognized ones are red flags
+
+### `wc -l` for counting results
+
+`wc -l` counts newlines, which equals the number of results when each result is on its own line.
+
+```bash
+find /tmp -perm 777 -type f 2>/dev/null | wc -l  # count insecure files
+ss -tuln | grep "LISTEN" | wc -l                 # count open listening ports
+```
+
+### The `|` pipe operator
+
+The pipe `|` passes the **stdout of one command as stdin to the next**, enabling powerful one-liners without intermediate files.
+
+```bash
+getent passwd | awk -F: '$3 >= 1000'      # filter users by UID
+ss -tuln | grep -v "127.0.0.1" | wc -l   # count external-facing ports
+find /tmp -perm 777 -type f | wc -l       # count insecure files
+```
+
+> Pipes pass data only — not exit codes. If an earlier command fails silently, the rest of the pipeline may run on empty input.
+
+### Counter variables and `((RISK++))`
+
+`(( ))` is Bash's arithmetic context — it evaluates integer expressions without needing `$` on variables inside.
+
+```bash
+RISK=0         # initialize counter
+((RISK++))     # increment by 1 (equivalent to: RISK=$((RISK + 1)))
+((RISK+=2))    # add 2
+echo "$RISK"   # use the variable normally outside (( ))
+```
+
+**Pattern used in audit scripts:**
+
+```bash
+COUNT=$(find /tmp -perm 777 -type f 2>/dev/null | wc -l)
+if [ "$COUNT" -gt 0 ]; then
+    echo "Warning: $COUNT insecure file(s) found"
+    ((RISK++))
+fi
+```
+
+Run a command → capture result in a variable → evaluate it → increment a risk score.
